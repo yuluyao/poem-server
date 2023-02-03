@@ -15,8 +15,7 @@ WORKDIR /app
 # 先安装依赖
 COPY go.mod .
 COPY go.sum .
-RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/go/bin \
-    set -x; go mod download
+RUN  set -x; go mod download
 
 # 把要编译的代码 copy 过去。（修改频率低的文件放在前面）
 COPY main.go .
@@ -25,8 +24,7 @@ COPY main.go .
 #COPY server ./server
 
 # 先生成 swagger 文档，然后编译，编译生成文件：main。（生成文档耗时很少，主要是编译耗时）
-RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/bin \
-    set -x; go build -o main .
+RUN set -x; go build -o main .
 
 
 # 运行时所用基础镜像，alpine
